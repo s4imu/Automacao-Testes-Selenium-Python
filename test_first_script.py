@@ -6,5 +6,5 @@ from selenium import webdriver
 browser = webdriver.Chrome()
 
 browser.get("https://google.com") #access google.com
-time.sleep(5)
+time.sleep(5) #wait 5 seconds before close the windows
 
