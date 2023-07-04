@@ -1,5 +1,4 @@
 from selenium import webdriver
-import time
 
 browser = webdriver.Chrome()
 
@@ -17,8 +16,5 @@ print(f'Page current URL is {current_url}')
 #Getting page page source
 page_source = browser.page_source
 print(f'Page source is {page_source}')
-
-#time.sleep(3)
-
 
 browser.close()
