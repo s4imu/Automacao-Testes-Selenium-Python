@@ -5,6 +5,7 @@ from pages.home_page import HomePage
 from pages.login_page import LoginPage
 from pages.cart_page import CartPage
 from pages.information_page import InformationPage
+from pages.overview_page import OverviewPage
 
 @pytest.mark.usefixtures("setup_teardown")
 @pytest.mark.buy
@@ -16,6 +17,7 @@ class TestCT04:
         home_page = HomePage()
         cart_page = CartPage()
         information_page = InformationPage()
+        overview_page = OverviewPage()
 
         product_1 = 'Sauce Labs Backpack'
         product_2 = 'Sauce Labs Bike Light'
@@ -60,9 +62,8 @@ class TestCT04:
         information_page.fill_form(first_name, last_name, postal_code)
 
         # Confirm Pay
-        assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Checkout: Overview']")
-
-        driver.find_element(By.ID, "finish").click()
+        overview_page.overview_page_redirect_check()
+        overview_page.finish_buy()
 
         # Order confirmation
         assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Checkout: Complete!']")
