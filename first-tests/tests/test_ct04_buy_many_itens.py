@@ -1,4 +1,3 @@
-from selenium.webdriver.common.by import By
 import conftest
 import pytest
 from pages.home_page import HomePage
