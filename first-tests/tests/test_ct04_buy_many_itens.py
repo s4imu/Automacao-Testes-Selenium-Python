@@ -6,6 +6,7 @@ from pages.login_page import LoginPage
 from pages.cart_page import CartPage
 from pages.information_page import InformationPage
 from pages.overview_page import OverviewPage
+from pages.order_confirmation_page import OrderConfirmationPage
 
 @pytest.mark.usefixtures("setup_teardown")
 @pytest.mark.buy
@@ -18,6 +19,7 @@ class TestCT04:
         cart_page = CartPage()
         information_page = InformationPage()
         overview_page = OverviewPage()
+        order_confirmation_page = OrderConfirmationPage()
 
         product_1 = 'Sauce Labs Backpack'
         product_2 = 'Sauce Labs Bike Light'
@@ -25,6 +27,9 @@ class TestCT04:
         first_name = "Symon"
         last_name = "Barreto"
         postal_code = "69097-760"
+
+        confirmation_message = "Thank you for your order!"
+
         # Login
         login_page.login("standard_user","secret_sauce")
 
@@ -66,6 +71,5 @@ class TestCT04:
         overview_page.finish_buy()
 
         # Order confirmation
-        assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Checkout: Complete!']")
-        assert driver.find_element(By.XPATH, "//h2[@class='complete-header' and text()='Thank you for your order!']")
-
+        order_confirmation_page.order_confirmation_redirect_check()
+        order_confirmation_page.order_confirmation_message_check(confirmation_message)
