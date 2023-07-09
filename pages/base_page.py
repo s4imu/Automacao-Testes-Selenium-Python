@@ -32,7 +32,7 @@ class BasePage:
         assert gotten_title == expected_title, f"Expected text: '{expected_title}' Gotten text: '{gotten_title}'"
 
     def wait_element_appears(self, locator, timeout=10):
-        return WebDriverWait(self.driver,  timeout).until(EC.presence_of_element_located(*locator))
+        return WebDriverWait(self.driver,  timeout).until(EC.presence_of_element_located(locator))
 
     def element_exists_check(self, locator):
         assert self.find_element(locator), f"Element {locator} exists but was not found!!!"
