@@ -2,7 +2,7 @@ import conftest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver import ActionChains
+from selenium.webdriver import ActionChains, Keys
 
 class BasePage:
     def __init__(self):
@@ -47,3 +47,12 @@ class BasePage:
     def right_button_click(self, locator):
         element = self.wait_element_appears(locator)
         ActionChains(self.driver).context_click(element).perform()
+
+    def keyboard_key_press(self, locator, key):
+        element = self.find_element(locator)
+        if key == "ENTER":
+            element.send_keys(Keys.ENTER)
+        elif key == "SPACE":
+            element.send_keys(Keys.SPACE)
+        elif key == "BACKSPACE":
+            element.send_keys(Keys.BACKSPACE)
