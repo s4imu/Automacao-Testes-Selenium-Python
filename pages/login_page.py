@@ -11,7 +11,7 @@ class LoginPage(BasePage): # Heritage
         self.username_field = (By.ID, "user-name")
         self.password_field = (By.ID, "password")
         self.login_button = (By.ID, "login-button")
-        self.error_message = (By.XPATH, "//h3[text()='Epic sadface: Username and password do not match any user in this service']")
+        self.error_message = (By.XPATH, "//*[@data-test='error']")
 
     def login(self, user, password):
         self.type(self.username_field, user)
@@ -20,3 +20,7 @@ class LoginPage(BasePage): # Heritage
 
     def unsuccessful_login_check(self):
        self.check_if_element_exists(self.error_message)
+
+    def login_error_message_text_check(self, expected_text):
+        gotten_text = self.check_element_text(self.error_message)
+        assert gotten_text == expected_text, f"Expected text: '{expected_text}' Gotten text: '{gotten_text}'"
