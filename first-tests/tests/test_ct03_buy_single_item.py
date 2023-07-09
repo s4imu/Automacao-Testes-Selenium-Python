@@ -3,6 +3,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 import pytest
 import conftest
+from pages.home_page import HomePage
 from pages.login_page import LoginPage
 
 @pytest.mark.usefixtures("setup_teardown")
@@ -11,18 +12,15 @@ class TestCT03:
 
     def test_ct03_buy_single_item(self):
         driver = conftest.driver
-        # Login
         login_page = LoginPage()
+        home_page = HomePage()
+        # Login
         login_page.login("standard_user","secret_sauce")
-        # driver.find_element(By.ID, "user-name").send_keys("standard_user")
-        # driver.find_element(By.ID, "password").send_keys("secret_sauce")
-        # driver.find_element(By.ID, "login-button").click()
 
-        assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Products']").is_displayed()
+        home_page.successful_login_check()
 
-        # Add product to cart
-        driver.find_element(By.XPATH, "//*[@class='inventory_item_name' and text()='Sauce Labs Backpack']").click()
-        driver.find_element(By.XPATH, "//button[text()='Add to cart']").click()
+        # Add first product to cart
+        home_page.add_item_to_cart('Sauce Labs Backpack')
 
         # Proceed to cart
         driver.find_element(By.XPATH, "//a[@class='shopping_cart_link']").click()

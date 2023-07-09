@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 import conftest
 import pytest
+from pages.home_page import HomePage
 from pages.login_page import LoginPage
 
 @pytest.mark.usefixtures("setup_teardown")
@@ -9,18 +10,15 @@ class TestCT04:
 
     def test_ct04_buy_many_itens(self):
         driver = conftest.driver
-        # Login
         login_page = LoginPage()
+        home_page = HomePage()
+        # Login
         login_page.login("standard_user","secret_sauce")
-        # driver.find_element(By.ID, "user-name").send_keys("standard_user")
-        # driver.find_element(By.ID, "password").send_keys("secret_sauce")
-        # driver.find_element(By.ID, "login-button").click()
 
-        assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Products']").is_displayed()
+        home_page.successful_login_check()
 
         # Add first product to cart
-        driver.find_element(By.XPATH, "//*[@class='inventory_item_name' and text()='Sauce Labs Backpack']").click()
-        driver.find_element(By.XPATH, "//button[text()='Add to cart']").click()
+        home_page.add_item_to_cart('Sauce Labs Backpack')
 
         # Add second product to cart
         driver.find_element(By.ID, "back-to-products").click()
