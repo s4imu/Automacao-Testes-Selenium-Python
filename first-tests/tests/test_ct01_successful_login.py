@@ -1,5 +1,4 @@
 import pytest
-import conftest
 from pages.login_page import LoginPage
 from pages.home_page import HomePage
 
@@ -7,7 +6,6 @@ from pages.home_page import HomePage
 @pytest.mark.login
 class TestCT01:
     def test_ct01_login_successful(self):
-        driver = conftest.driver
         # Trying to login
         login_page = LoginPage()
         home_page = HomePage()

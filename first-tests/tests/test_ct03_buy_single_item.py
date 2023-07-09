@@ -6,6 +6,7 @@ import conftest
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
 from pages.cart_page import CartPage
+from pages.information_page import InformationPage
 
 @pytest.mark.usefixtures("setup_teardown")
 @pytest.mark.buy
@@ -16,6 +17,13 @@ class TestCT03:
         login_page = LoginPage()
         home_page = HomePage()
         cart_page = CartPage()
+        information_page = InformationPage()
+
+        product_1 = 'Sauce Labs Backpack'
+
+        first_name = "Symon"
+        last_name = "Barreto"
+        postal_code = "69097-760"
 
         # Login
         login_page.login("standard_user","secret_sauce")
@@ -23,7 +31,7 @@ class TestCT03:
         home_page.successful_login_check()
 
         # Add first product to cart
-        home_page.add_item_to_cart('Sauce Labs Backpack')
+        home_page.add_item_to_cart(product_1)
 
         # Proceed to cart
         home_page.go_to_cart()
@@ -32,7 +40,7 @@ class TestCT03:
         # assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Your Cart']").is_displayed()
 
         cart_page.cart_page_redirect_check()
-        cart_page.check_item_in_cart('Sauce Labs Backpack')
+        cart_page.check_item_in_cart(product_1)
 
         # Explicity wait
         # wait.until(ec.text_to_be_present_in_element((By.XPATH, "//span[@class='title']"), "Your Cart"))
@@ -42,14 +50,10 @@ class TestCT03:
         # Proceed to checkout
         cart_page.proceed_to_checkout()
 
-        assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Checkout: Your Information']").is_displayed()
+        information_page.information_page_redirect_check()
 
         # Fill inputs
-        driver.find_element(By.ID, "first-name").send_keys("Symon")
-        driver.find_element(By.ID, "last-name").send_keys("Barreto")
-        driver.find_element(By.ID, "postal-code").send_keys("69097-760")
-
-        driver.find_element(By.ID, "continue").click()
+        information_page.fill_form(first_name,last_name,postal_code)
 
         # Confirm Pay
         assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Checkout: Overview']")

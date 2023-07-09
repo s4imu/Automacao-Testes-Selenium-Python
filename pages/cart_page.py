@@ -13,8 +13,7 @@ class CartPage(BasePage):
         self.checkout_button = (By.ID, "checkout")
 
     def cart_page_redirect_check(self):
-        gotten_title = self.check_element_text(self.page_title)
-        assert gotten_title == self.expected_title, f"Expected text: '{self.expected_title}' Gotten text: '{gotten_title}'"
+        self.page_redirect_check(self.expected_title)
     def check_item_in_cart(self, item_name):
         item = (self.inventory_item[0], self.inventory_item[1].format(item_name))
         self.check_if_element_exists(item)
