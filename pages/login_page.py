@@ -11,11 +11,12 @@ class LoginPage(BasePage): # Heritage
         self.username_field = (By.ID, "user-name")
         self.password_field = (By.ID, "password")
         self.login_button = (By.ID, "login-button")
+        self.error_message = (By.XPATH, "//h3[text()='Epic sadface: Username and password do not match any user in this service']")
 
     def login(self, user, password):
-        # self.driver.find_element(*self.username_field).send_keys(user)
-        # self.driver.find_element(*self.password_field).send_keys(password)
-        # self.driver.find_element(*self.login_button).click()
         self.type(self.username_field, user)
         self.type(self.password_field, password)
         self.click(self.login_button)
+
+    def unsuccessful_login_check(self):
+       self.check_if_element_exists(self.error_message)

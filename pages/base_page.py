@@ -16,3 +16,6 @@ class BasePage:
 
     def click(self,locator):
         self.find_element(locator).click()
+
+    def check_if_element_exists(self, locator):
+        assert self.find_element(locator).is_displayed(), f"Element '{locator}' not found!!!"
