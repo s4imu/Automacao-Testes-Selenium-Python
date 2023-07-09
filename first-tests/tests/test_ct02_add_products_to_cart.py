@@ -3,6 +3,7 @@ import pytest
 import conftest
 from pages.login_page import LoginPage
 from pages.home_page import HomePage
+from pages.cart_page import CartPage
 
 @pytest.mark.usefixtures("setup_teardown")
 @pytest.mark.cart
@@ -11,6 +12,7 @@ class TestCT02:
         driver = conftest.driver
         login_page = LoginPage()
         home_page = HomePage()
+        cart_page = CartPage()
         # Login
         login_page.login("standard_user","secret_sauce")
 
@@ -18,8 +20,8 @@ class TestCT02:
         home_page.add_item_to_cart('Sauce Labs Backpack')
 
         # Checking if the product is in shopping cart
-        driver.find_element(By.XPATH, "//a[@class='shopping_cart_link']").click()
-        assert driver.find_element(By.XPATH, "//*[@class='inventory_item_name' and text()='Sauce Labs Backpack']").is_displayed()
+        home_page.go_to_cart()
+        cart_page.check_item_in_cart('Sauce Labs Backpack')
 
         driver.find_element(By.ID, "continue-shopping").click()
 

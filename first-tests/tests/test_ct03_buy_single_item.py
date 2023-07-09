@@ -5,6 +5,7 @@ import pytest
 import conftest
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
+from pages.cart_page import CartPage
 
 @pytest.mark.usefixtures("setup_teardown")
 @pytest.mark.buy
@@ -14,6 +15,8 @@ class TestCT03:
         driver = conftest.driver
         login_page = LoginPage()
         home_page = HomePage()
+        cart_page = CartPage()
+
         # Login
         login_page.login("standard_user","secret_sauce")
 
@@ -23,20 +26,21 @@ class TestCT03:
         home_page.add_item_to_cart('Sauce Labs Backpack')
 
         # Proceed to cart
-        driver.find_element(By.XPATH, "//a[@class='shopping_cart_link']").click()
+        home_page.go_to_cart()
 
         # Implicity wait
-        assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Your Cart']").is_displayed()
+        # assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Your Cart']").is_displayed()
+
+        cart_page.cart_page_redirect_check()
+        cart_page.check_item_in_cart('Sauce Labs Backpack')
 
         # Explicity wait
         # wait.until(ec.text_to_be_present_in_element((By.XPATH, "//span[@class='title']"), "Your Cart"))
         # title_text = driver.find_element(By.XPATH, "//span[@class='title']").text
         # assert title_text == "Your Cart"
 
-        assert driver.find_element(By.XPATH, "//*[@class='inventory_item_name' and text()='Sauce Labs Backpack']").is_displayed()
-
         # Proceed to checkout
-        driver.find_element(By.ID, "checkout").click()
+        cart_page.proceed_to_checkout()
 
         assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Checkout: Your Information']").is_displayed()
 

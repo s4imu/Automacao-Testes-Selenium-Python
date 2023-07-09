@@ -9,6 +9,7 @@ class HomePage(BasePage):
         self.page_title = (By.XPATH, "//span[@class='title']")
         self.inventory_item = (By.XPATH, "//*[@class='inventory_item_name' and text()='{}']")
         self.add_to_cart_button = (By.XPATH, "//*[text()='Add to cart']")
+        self.cart_icon = (By.XPATH, "//a[@class='shopping_cart_link']")
 
     def successful_login_check(self):
         self.check_if_element_exists(self.page_title)
@@ -17,3 +18,6 @@ class HomePage(BasePage):
          item = (self.inventory_item[0], self.inventory_item[1].format(item_name))
          self.click(item)
          self.click(self.add_to_cart_button)
+
+    def go_to_cart(self):
+        self.click(self.cart_icon)

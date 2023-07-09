@@ -3,6 +3,7 @@ import conftest
 import pytest
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
+from pages.cart_page import CartPage
 
 @pytest.mark.usefixtures("setup_teardown")
 @pytest.mark.buy
@@ -12,6 +13,7 @@ class TestCT04:
         driver = conftest.driver
         login_page = LoginPage()
         home_page = HomePage()
+        cart_page = CartPage()
         # Login
         login_page.login("standard_user","secret_sauce")
 
@@ -20,25 +22,28 @@ class TestCT04:
         # Add first product to cart
         home_page.add_item_to_cart('Sauce Labs Backpack')
 
+        # Proceed to cart
+        home_page.go_to_cart()
+
+        cart_page.cart_page_redirect_check()
+        cart_page.check_item_in_cart('Sauce Labs Backpack')
+
         # Add second product to cart
-        driver.find_element(By.ID, "back-to-products").click()
+        cart_page.continue_shopping()
 
-        assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Products']").is_displayed()
+        home_page.successful_login_check()
 
-        driver.find_element(By.XPATH, "//*[@class='inventory_item_name' and text()='Sauce Labs Bike Light']").click()
-        driver.find_element(By.XPATH, "//button[text()='Add to cart']").click()
+        home_page.add_item_to_cart('Sauce Labs Bike Light')
 
         # Proceed to cart
-        driver.find_element(By.XPATH, "//a[@class='shopping_cart_link']").click()
+        home_page.go_to_cart()
 
-        # Implicity wait
-        assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Your Cart']").is_displayed()
-
-        assert driver.find_element(By.XPATH, "//*[@class='inventory_item_name' and text()='Sauce Labs Backpack']").is_displayed()
-        assert driver.find_element(By.XPATH, "//*[@class='inventory_item_name' and text()='Sauce Labs Bike Light']").is_displayed()
+        cart_page.cart_page_redirect_check()
+        cart_page.check_item_in_cart('Sauce Labs Backpack')
+        cart_page.check_item_in_cart('Sauce Labs Bike Light')
 
         # Proceed to checkout
-        driver.find_element(By.ID, "checkout").click()
+        cart_page.proceed_to_checkout()
 
         assert driver.find_element(By.XPATH, "//span[@class='title' and text()='Checkout: Your Information']").is_displayed()
 
